@@ -1,0 +1,17 @@
+{
+
+    "local_credentials":{
+        "rel_dir": "local_credentials",
+        "backup_accounts_dir": "accounts_backup",
+        "private_key_filename": "privatekey"
+
+    },
+
+    "remote_credentials":{
+        "rel_dir": "remote_credentials",
+        "accounts_dir": "Accounts",
+        "public_key_filename": "publickey"
+
+    }
+ 
+}
