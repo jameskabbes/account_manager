@@ -19,7 +19,7 @@ class Key_Value_Base( Base ):
 
     MAND_ATTS = ['val']
     _IMP_ATTS = ['val']
-    _ONE_LINE_ATTS = ['type','val']
+    _ONE_LINE_ATTS = ['val']
 
     def __init__(self, Entry, **kwargs ):
 
@@ -58,7 +58,7 @@ class Key_Value_Base( Base ):
 
             prev_val = self.val
             if from_file:
-                self.val = self.Entry.Entries.Account.Accounts.file_input_Path.read()
+                self.val = self.Entry.Entries.Account.Accounts.M.s.file_input.Path.read()
 
             else:
                 self.get_val( autocomplete = autocomplete, **kwargs )

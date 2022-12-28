@@ -8,12 +8,6 @@ import kabbes_cryptography as cryp
 
 class Accounts( ParentPluralDict, Base ):
 
-    DEFAULT_ATT_VALUES = {
-    'Dir': None,
-    'database_name': None,
-    'cwd_dir': do.get_cwd()
-    }
-
     _OVERRIDE_OPTIONS = {
     1: [ 'Open Account', 'open_Account_user' ],
     2: [ 'Make Account', 'make_Account_user'],
@@ -23,43 +17,21 @@ class Accounts( ParentPluralDict, Base ):
 
     MAX_PRINT_LENGTH = 10
 
-    def __init__(self, **kwargs ):
+    def __init__(self, Manager, **kwargs ):
 
         ParentPluralDict.__init__( self, 'Accounts' )
         Base.__init__( self, **kwargs )
 
         #
-        self._cwd_Dir = do.Dir( self.cwd_dir )
-
-        self.file_input_Path = self._cwd_Dir.join_Path( path = 'file_input.txt' ) 
-        if not self.file_input_Path.exists():
-            self.file_input_Path.create( override = True )
-
-        settings_Path = self._cwd_Dir.join_Path( path = 'settings.json' )
-        if settings_Path.exists():
-            new_Settings = ps.Settings( **ps.json_to_dict(settings_Path.read()) )
-            kabbes_account_manager.Settings = kabbes_account_manager.Settings.merge( new_Settings )
-
+        self.M = Manager
         self.Key_Value_CRTI = Key_Value_CRTI( self )
-
-        #
-        self.local_credentials_Dir =  self._cwd_Dir.join_Dir( path = kabbes_account_manager.Settings.local_credentials.rel_dir )
-        self.backup_accounts_Dir =    self.local_credentials_Dir.join_Dir( path = kabbes_account_manager.Settings.local_credentials.backup_accounts_dir )
-        self.private_Key_Path =       self.local_credentials_Dir.join_Path( path = kabbes_account_manager.Settings.local_credentials.private_key_filename )
-
-        self.remote_credentials_Dir = self._cwd_Dir.join_Dir( path = kabbes_account_manager.Settings.remote_credentials.rel_dir )
-        self.remote_accounts_Dir =    self.remote_credentials_Dir.join_Dir( path = kabbes_account_manager.Settings.remote_credentials.accounts_dir )
-        self.public_Key_Path =        self.remote_credentials_Dir.join_Dir( path = kabbes_account_manager.Settings.remote_credentials.public_key_filename )
-
-        self.non_encrypted_export_Path = self.local_credentials_Dir.join_Path( path = 'non_encrypted_export.json' )
-
 
         #
         self.load_Account_templates()
 
         #
         is_empty = self.get_Dir_user()
-        self.backup_Dir = self.backup_accounts_Dir.join_Dir( path = self.Dir.dirs[-1] )
+        self.M.s.load_key_value('backup.Dir', self.M.s.accounts.local.Dir.join_Dir( path = self.M.s.Dir.dirs[-1] ) )
         self.setup_encryption()
 
         # Load Accounts
@@ -103,9 +75,9 @@ class Accounts( ParentPluralDict, Base ):
     def setup_encryption( self ):
 
         RSA_inst = cryp.RSA()
-        RSA_inst.import_public_Key( self.public_Key_Path, set = True )
-        RSA_inst.import_private_Key( self.private_Key_Path, set = True )
-        self.Combined = cryp.Combined( RSA = RSA_inst, Dir = self.Dir )
+        RSA_inst.import_public_Key(  self.M.s.keys.public.Path,  set = True )
+        RSA_inst.import_private_Key( self.M.s.keys.private.Path, set = True )
+        self.Combined = cryp.Combined( RSA = RSA_inst, Dir = self.M.s.Dir )
 
     def _import_from_json( self, json_string ):
 
@@ -124,7 +96,7 @@ class Accounts( ParentPluralDict, Base ):
             json_string = "{}"
 
         else:
-            self.Combined.Dir = self.Dir
+            self.Combined.Dir = self.M.s.Dir
             json_string = self.Combined.decrypt().decode( kabbes_account_manager.ENCODING )
 
         self._import_from_json( json_string )
@@ -149,41 +121,35 @@ class Accounts( ParentPluralDict, Base ):
 
     def get_Dir_user( self ):
 
-        if not self.remote_accounts_Dir.exists():
-            self.remote_accounts_Dir.create()
+        if not self.M.s.accounts.remote.Dir.exists():
+            self.M.s.accounts.remote.Dir.create()
 
         # first, see if the user gave us something to use
-        if self.Dir == None:
-            if self.database_name != None:
-                self.Dir = do.Dir( self.remote_accounts_Dir.join( self.database_name ) )
+        if self.M.s.Dir == None:
+            if self.M.s.database_name != None:
+                self.M.s.Dir = do.Dir( self.remote_accounts_Dir.join( self.M.s.database_name ) )
 
         # now, check if Dir has been defined and is usable
-        if self.Dir != None:
-            if not self.Dir.exists():
-                self.Dir = None
+        if self.M.s.Dir != None:
+            if not self.M.s.Dir.exists():
+                self.M.s.load_key_value('Dir', None) 
 
         # if we still have to setup the Dir
-        if self.Dir == None:
+        if self.M.s.Dir == None:
 
-            possible_Dirs = self.remote_accounts_Dir.list_contents_Paths( block_dirs = False, block_paths = True )
+            possible_Dirs = self.M.s.accounts.remote.Dir.list_contents_Paths( block_dirs = False, block_paths = True )
 
             if len(possible_Dirs) > 0:
 
-                ind = 0
-                if len(possible_Dirs ) > 1:
-
-                    filenames = [ D.dirs[-1] for D in possible_Dirs ]
-                    ps.print_for_loop( filenames )
-                    ind = ps.get_int_input( 1, len(filenames), prompt = 'Select your Account catalog: ' ) - 1
-
-                self.Dir = possible_Dirs.Objs[ ind ]
+                Dir = ps.get_selection_from_list( possible_Dirs )
+                self.M.s.Dir = Dir
                 return False
 
             else:
-                print ('No options for data found in ' + str(self.remote_accounts_Dir))
-                new_root = input( 'Enter a new folder name ' + str(self.remote_accounts_Dir.p) + '/' )
-                self.Dir = do.Dir( self.remote_accounts_Dir.join( new_root ) )
-                self.Dir.create()
+                print ('No options for data found in ' + str(self.M.s.accounts.remote.Dir))
+                new_root = input( 'Enter a new folder name ' + str(self.M.s.accounts.remote.Dir.p) + '/' )
+                self.M.s.Dir = self.M.s.accounts.remote.Dir.join_Dir( path=new_root )
+                self.M.s.Dir.create()
                 return True
 
         return False
@@ -209,48 +175,26 @@ class Accounts( ParentPluralDict, Base ):
         new_Account = self.make_Account( type )
         new_Account.Entries.make_Entry_user()
 
-    def open_Account( self, Acc_inst ):
-
-        Acc_inst.run()
-
-    def open_Account_user( self ):
-
-        Accs = list(self)
-        Accs.reverse()
-
-        ps.print_for_loop( [ Acc.display() for Acc in Accs ] )
-        ind = ps.get_int_input( 1, len(self), prompt = 'Select your Account: ', exceptions = [''] )
-        if ind == '':
-            return
-
-        self.open_Account( Accs[ ind-1 ] )
-
     def export_non_encrypted( self ):
 
         json_string = self.export_to_json()
-        ps.write_text_file( self.non_encrypted_export_Path.p, string = json_string )
+        self.M.s.decrypted_export.Path.write( string=json_string )
 
     def backup( self ):
 
         self.export_to_Dir()
-        self.Dir.copy( Destination = self.backup_Dir, overwrite = True )
+        self.M.s.Dir.copy( Destination = self.M.s.backup.Dir, overwrite = True )
 
     def get_Account_type_user( self ):
 
         '''return the user's selection of Account type (CreditCard, Online, etc) '''
 
-        print ()
         ps.print_for_loop( list(self.Account_template_modules.keys()) )
         ind = ps.get_int_input( 1, len(self.Account_template_modules), prompt = 'Choose your Account Template' ) - 1
         return list( self.Account_template_modules.keys() )[ ind ]
-
-    def run_RTI_choice( self, Acc_inst ):
-
-        Acc_inst.run()
 
     def pre_run( self ):
         self.sort()
 
     def exit( self ):
-
         self.export_to_Dir()

@@ -1,17 +1,75 @@
 {
-
-    "local_credentials":{
-        "rel_dir": "local_credentials",
-        "backup_accounts_dir": "accounts_backup",
-        "private_key_filename": "privatekey"
-
+    "cwd":{
+        "dir":{
+            "rel_obj":"_cwd_Dir",
+            "path_string":""
+        }
     },
 
-    "remote_credentials":{
-        "rel_dir": "remote_credentials",
-        "accounts_dir": "Accounts",
-        "public_key_filename": "publickey"
+    "credentials":{
+        "local":{
+            "dir":{
+                "rel_obj": "cwd.Dir",
+                "path_string": "local_credentials"
+            }
+        },
+        "remote":{
+            "dir":{
+                "rel_obj": "cwd.Dir",
+                "path_string": "remote_credentials"
+            }
+        }
+    },
 
-    }
- 
+    "accounts":{
+        "local":{
+            "dir":{
+                "rel_obj":"credentials.local.Dir",
+                "path_string":"Data/accounts_backup"
+            }
+        },
+        "remote":{
+            "dir":{
+                "rel_obj":"credentials.remote.Dir",
+                "path_string":"Accounts"
+            }
+        }
+    },
+
+
+    "keys":{
+        "private":{
+            "path":{
+                "rel_obj":"credentials.local.Dir",
+                "path_string":"Data/privatekey"
+            }
+        },
+        "public":{
+            "path":{
+                "rel_obj":"credentials.remote.Dir",
+                "path_string":"publickey"
+            }
+        }
+    },
+
+    "file_input":{
+        "path":{
+            "rel_obj":"cwd.Dir",
+            "path_string":"file_input.txt"
+        }
+    },
+    "decrypted_export":{
+        "path":{
+            "rel_obj":"cwd.Dir",
+            "path_string":"decrypted_export.json"
+        }
+    },
+    "user_settings":{
+        "path":{
+            "rel_obj":"cwd.Dir",
+            "path_string":"kabbes_account_manager.json"
+        }
+    },
+    "database_name": null
+
 }
