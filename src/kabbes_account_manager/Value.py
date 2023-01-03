@@ -1,6 +1,4 @@
-import kabbes_account_manager
 from kabbes_account_manager import Key_Value_Base
-import kabbes_password_creator.generator_support as pgs
 
 class Value( Key_Value_Base ):
 
@@ -21,7 +19,7 @@ class Value( Key_Value_Base ):
             password = input('Enter the value for password, type "' + random_key + '" for random password:  ')
 
             if password == random_key:
-                password = pgs.word_password()
+                password = self.Entry.Entries.Account.Accounts.Manager.PasswordManager.gen_word_password()
                 print (password)
 
             self.val = password

@@ -58,7 +58,7 @@ class Key_Value_Base( Base ):
 
             prev_val = self.val
             if from_file:
-                self.val = self.Entry.Entries.Account.Accounts.M.s.file_input.Path.read()
+                self.val = self.Entry.Entries.Account.Accounts.M.cfg.file_input.Path.read()
 
             else:
                 self.get_val( autocomplete = autocomplete, **kwargs )

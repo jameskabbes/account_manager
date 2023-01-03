@@ -1,7 +1,7 @@
 import dir_ops as do
 import os
 import py_starter as ps
-import kabbes_settings 
+import kabbes_config
 
 ### Constants
 ENCODING = 'utf-8'
@@ -13,7 +13,7 @@ _repo_Dir = do.Dir( os.path.abspath( __file__ ) ).ascend(level_to_ascend=3)
 
 #
 templates_Dir = _Dir.join_Dir( path = 'AccountTemplates/Templates' )
-DEFAULT_SETTINGS_PATH = _Dir.join_Path( path = 'default_settings.json' )
+DEFAULT_CONFIG_PATH = _Dir.join_Path( path = 'default_config.json' )
         
 from .utils import *
 from .Base import Base

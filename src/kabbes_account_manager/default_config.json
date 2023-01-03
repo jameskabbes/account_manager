@@ -1,0 +1,106 @@
+{
+    "credentials":{
+        "local":{
+            "!Dir":{
+                "$ref": "{{cwd.Dir}}",
+                "method": {
+                    "name": "join_Dir",
+                    "kwargs":{
+                        "path": "local_credentials"
+                    }    
+                }
+            }
+        },
+        "remote":{
+            "!Dir":{
+                "$ref": "{{cwd.Dir}}",
+                "method": {
+                    "name": "join_Dir",
+                    "kwargs":{
+                        "path": "remote_credentials"
+                    }    
+                }
+            }
+        }
+    },
+
+    "accounts":{
+        "local":{
+            "!Dir":{
+                "$ref": "{{credentials.local.Dir}}",
+                "method": {
+                    "name": "join_Dir",
+                    "kwargs":{
+                        "path": "Data/accounts_backup"
+                    }
+                }
+            }
+        },
+        "remote":{
+            "!Dir":{
+                "$ref": "{{credentials.remote.Dir}}",
+                "method": {
+                    "name": "join_Dir",
+                    "kwargs":{
+                        "path": "Accounts"
+                    }
+                }
+            }
+        }
+    },
+
+
+    "keys":{
+        "private":{
+            "!Path":{
+                "$ref": "{{credentials.local.Dir}}",
+                "method": {
+                    "name": "join_Path",
+                    "kwargs":{
+                        "path": "Data/privatekey"
+                    }
+                }
+            }
+        },
+        "public":{
+            "!Path":{
+                "$ref": "{{credentials.remote.Dir}}",
+                "method": {
+                    "name": "join_Path",
+                    "kwargs":{
+                        "path": "publickey"
+                    }
+                }
+            }
+        }
+    },
+
+    "file_input":{
+        "!Path":{
+            "$ref": "{{cwd.Dir}}",
+            "method": {
+                "name": "join_Path",
+                "kwargs":{
+                    "path": "file_input.txt"
+                }
+            }
+        }
+    },
+    "decrypted_export":{
+        "!Path":{
+            "$ref": "{{cwd.Dir}}",
+            "method": {
+                "name": "join_Path",
+                "kwargs":{
+                    "path": "decrypted_export.txt"
+                }
+            }
+        }
+    },
+
+    "user_config":{
+        "path": null
+    },
+    
+    "database_name": null
+}
