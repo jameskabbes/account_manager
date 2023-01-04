@@ -97,10 +97,6 @@
             }
         }
     },
-
-    "user_config":{
-        "path": null
-    },
-    
+  
     "database_name": null
 }
