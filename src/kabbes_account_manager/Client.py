@@ -1,11 +1,11 @@
 import kabbes_account_manager
-import kabbes_client
+import kabbes_user_client
 import kabbes_password_creator
 
-class Client( kabbes_account_manager.Base, kabbes_client.Client ):
+class Client( kabbes_account_manager.Base, kabbes_user_client.Client ):
 
     _OVERRIDE_OPTIONS = {
-        1: ["Open Accounts", "run_Child_user"]
+        "1": ["Open Accounts", "run_Child_user"]
     }
 
     _CONFIG = {
@@ -14,10 +14,14 @@ class Client( kabbes_account_manager.Base, kabbes_client.Client ):
         "Dir": None
     }
 
-    def __init__( self, *args, **kwargs ):
-        kabbes_account_manager.Base.__init__( self )
-        kabbes_client.Client.__init__( self, *args, **kwargs )
+    def __init__( self, **kwargs ):
 
+        kabbes_user_client.Client.__init__( self, **kwargs )
+        kabbes_account_manager.Base.__init__( self )
         self.Accounts = kabbes_account_manager.Accounts( self )
         self.PasswordManager = kabbes_password_creator.Client()
         self._Children = [ self.Accounts ]
+
+
+
+        # "path": "{{cwd.Dir}}/{{package_name}}.json",

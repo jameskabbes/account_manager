@@ -1,19 +1,11 @@
 {
-    "credentials":{
-        "local":{
+    "working":{
+        "!Dir": "{{cwd.Dir}}"
+    },
+    "remote":{
+        "credentials":{
             "!Dir":{
-                "$ref": "{{cwd.Dir}}",
-                "method": {
-                    "name": "join_Dir",
-                    "kwargs":{
-                        "path": "local_credentials"
-                    }    
-                }
-            }
-        },
-        "remote":{
-            "!Dir":{
-                "$ref": "{{cwd.Dir}}",
+                "$ref": "{{working.Dir}}",
                 "method": {
                     "name": "join_Dir",
                     "kwargs":{
@@ -21,24 +13,10 @@
                     }    
                 }
             }
-        }
-    },
-
-    "accounts":{
-        "local":{
-            "!Dir":{
-                "$ref": "{{credentials.local.Dir}}",
-                "method": {
-                    "name": "join_Dir",
-                    "kwargs":{
-                        "path": "Data/accounts_backup"
-                    }
-                }
-            }
         },
-        "remote":{
+        "accounts":{
             "!Dir":{
-                "$ref": "{{credentials.remote.Dir}}",
+                "$ref": "{{remote.credentials.Dir}}",
                 "method": {
                     "name": "join_Dir",
                     "kwargs":{
@@ -48,12 +26,35 @@
             }
         }
     },
-
+    "local":{
+        "credentials":{
+            "!Dir":{
+                "$ref": "{{working.Dir}}",
+                "method": {
+                    "name": "join_Dir",
+                    "kwargs":{
+                        "path": "local_credentials"
+                    }    
+                }
+            }
+        },
+        "accounts":{
+            "!Dir":{
+                "$ref": "{{local.credentials.Dir}}",
+                "method": {
+                    "name": "join_Dir",
+                    "kwargs":{
+                        "path": "Data/accounts_backup"
+                    }
+                }
+            }
+        }
+    },
 
     "keys":{
         "private":{
             "!Path":{
-                "$ref": "{{credentials.local.Dir}}",
+                "$ref": "{{local.credentials.Dir}}",
                 "method": {
                     "name": "join_Path",
                     "kwargs":{
@@ -64,7 +65,7 @@
         },
         "public":{
             "!Path":{
-                "$ref": "{{credentials.remote.Dir}}",
+                "$ref": "{{remote.credentials.Dir}}",
                 "method": {
                     "name": "join_Path",
                     "kwargs":{
@@ -77,7 +78,7 @@
 
     "file_input":{
         "!Path":{
-            "$ref": "{{cwd.Dir}}",
+            "$ref": "{{working.Dir}}",
             "method": {
                 "name": "join_Path",
                 "kwargs":{
@@ -88,7 +89,7 @@
     },
     "decrypted_export":{
         "!Path":{
-            "$ref": "{{cwd.Dir}}",
+            "$ref": "{{working.Dir}}",
             "method": {
                 "name": "join_Path",
                 "kwargs":{
@@ -97,6 +98,23 @@
             }
         }
     },
-  
+    "backup":{
+        "!Dir":{
+            "$ref": "{{Dir}}",
+            "!new_path":{
+                "$ref": "{{Dir}}",
+                "method": {
+                    "name": "lowest"
+                }
+            },
+            "method": {
+                "name": "join_Dir",
+                "kwargs":{
+                    "path": "{{backup.!Dir.new_path}}"
+                }
+            }
+        }
+    },
+
     "database_name": null
 }
