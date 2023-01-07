@@ -9,10 +9,10 @@ import kabbes_cryptography as cryp
 class Accounts( ParentPluralDict, Base ):
 
     _OVERRIDE_OPTIONS = {
-    1: [ 'Open Account', 'open_Account_user' ],
-    2: [ 'Make Account', 'make_Account_user'],
-    5: [ 'Export non-encrypted', 'export_non_encrypted' ],
-    6: [ 'Backup Accounts', 'backup' ]
+    "1": [ 'Open Account', 'open_Account_user' ],
+    "2": [ 'Make Account', 'make_Account_user'],
+    "5": [ 'Export non-encrypted', 'export_non_encrypted' ],
+    "6": [ 'Backup Accounts', 'backup' ]
     }
 
     MAX_PRINT_LENGTH = 10
@@ -31,7 +31,6 @@ class Accounts( ParentPluralDict, Base ):
 
         #
         is_empty = self.get_Dir_user()
-        self.M.cfg.load_key_value('backup.Dir', self.M.cfg.accounts.local.Dir.join_Dir( path = self.M.cfg.Dir.dirs[-1] ) )
         self.setup_encryption()
 
         # Load Accounts
@@ -75,9 +74,9 @@ class Accounts( ParentPluralDict, Base ):
     def setup_encryption( self ):
 
         RSA_inst = cryp.RSA()
-        RSA_inst.import_public_Key(  self.M.cfg.keys.public.Path,  set = True )
-        RSA_inst.import_private_Key( self.M.cfg.keys.private.Path, set = True )
-        self.Combined = cryp.Combined( RSA = RSA_inst, Dir = self.M.cfg.Dir )
+        RSA_inst.import_public_Key(  self.M.cfg['keys.public.Path'],  set = True )
+        RSA_inst.import_private_Key( self.M.cfg['keys.private.Path'], set = True )
+        self.Combined = cryp.Combined( RSA = RSA_inst, Dir = self.M.cfg['Dir'] )
 
     def _import_from_json( self, json_string ):
 
@@ -88,6 +87,9 @@ class Accounts( ParentPluralDict, Base ):
 
         for Acc_id in dictionary:
             account_dictionary = dictionary[Acc_id]
+
+            print (account_dictionary)
+
             self.make_Account( account_dictionary['type'], dictionary = account_dictionary)
 
     def _import_from_Dir( self, is_empty ):
@@ -96,7 +98,7 @@ class Accounts( ParentPluralDict, Base ):
             json_string = "{}"
 
         else:
-            self.Combined.Dir = self.M.cfg.Dir
+            self.Combined.Dir = self.M.cfg['Dir']
             json_string = self.Combined.decrypt().decode( kabbes_account_manager.ENCODING )
 
         self._import_from_json( json_string )
@@ -121,35 +123,35 @@ class Accounts( ParentPluralDict, Base ):
 
     def get_Dir_user( self ):
 
-        if not self.M.cfg.accounts.remote.Dir.exists():
-            self.M.cfg.accounts.remote.Dir.create()
+        if not self.M.cfg['remote.accounts.Dir'].exists():
+            self.M.cfg['remote.accounts.Dir'].create()
 
         # first, see if the user gave us something to use
-        if self.M.cfg.Dir == None:
-            if self.M.cfg.database_name != None:
-                self.M.cfg.Dir = do.Dir( self.remote_accounts_Dir.join( self.M.cfg.database_name ) )
+        if self.M.cfg.get_node('Dir').get_value() == None:
+            if self.M.cfg['database_name'].get_value() != None:
+                self.M.cfg.get_node('Dir').set_value( self.M.cfg['remote.accounts.Dir'].join_Dir( path = self.M.cfg['database_name'] ) )
 
         # now, check if Dir has been defined and is usable
-        if self.M.cfg.Dir != None:
-            if not self.M.cfg.Dir.exists():
-                self.M.cfg.load_key_value('Dir', None) 
+        if self.M.cfg.get_node('Dir').get_value() != None:
+            if not self.M.cfg['Dir'].exists():
+                self.M.cfg.get_node( 'Dir' ).set_value( None )
 
         # if we still have to setup the Dir
-        if self.M.cfg.Dir == None:
+        if self.M.cfg.get_node('Dir').get_value() == None:
 
-            possible_Dirs = self.M.cfg.accounts.remote.Dir.list_contents_Paths( block_dirs = False, block_paths = True )
+            possible_Dirs = self.M.cfg['remote.accounts.Dir'].list_contents_Paths( block_dirs = False, block_paths = True )
 
             if len(possible_Dirs) > 0:
 
                 Dir = ps.get_selection_from_list( possible_Dirs )
-                self.M.cfg.Dir = Dir
+                self.M.cfg.get_node('Dir').set_value( Dir ) 
                 return False
 
             else:
-                print ('No options for data found in ' + str(self.M.cfg.accounts.remote.Dir))
-                new_root = input( 'Enter a new folder name ' + str(self.M.cfg.accounts.remote.Dir.p) + '/' )
-                self.M.cfg.Dir = self.M.cfg.accounts.remote.Dir.join_Dir( path=new_root )
-                self.M.cfg.Dir.create()
+                print ('No options for data found in ' + str(self.M.cfg['remote.accounts.Dir']))
+                new_root = input( 'Enter a new folder name ' + str(self.M.cfg['remote.accounts.Dir']) + '/' )
+                self.M.cfg.get_node('Dir').set_value( self.M.cfg['remote.accounts.Dir'].join_Dir( path=new_root ) )
+                self.M.cfg['Dir'].create()
                 return True
 
         return False
@@ -178,12 +180,12 @@ class Accounts( ParentPluralDict, Base ):
     def export_non_encrypted( self ):
 
         json_string = self.export_to_json()
-        self.M.cfg.decrypted_export.Path.write( string=json_string )
+        self.M.cfg['decrypted_export.Path'].write( string=json_string )
 
     def backup( self ):
 
         self.export_to_Dir()
-        self.M.cfg.Dir.copy( Destination = self.M.cfg.backup.Dir, overwrite = True )
+        self.M.cfg['Dir'].copy( Destination = self.M.cfg['backup.Dir'], overwrite = True )
 
     def get_Account_type_user( self ):
 
