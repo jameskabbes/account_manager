@@ -9,11 +9,11 @@ class Key_Value_Base( Base ):
     }
 
     _OVERRIDE_OPTIONS = {
-    1: [ 'Edit', 'edit' ],
-    2: [ 'Copy', 'copy'],
-    3: [ 'Raw Edit', 'raw_edit'],
-    4: [ 'Read from File', 'read_from_file'],
-    5: [ 'Open Entry', 'run_Entry']
+    "1": [ 'Edit', 'edit' ],
+    "2": [ 'Copy', 'copy'],
+    "3": [ 'Raw Edit', 'raw_edit'],
+    "4": [ 'Read from File', 'read_from_file'],
+    "5": [ 'Open Entry', 'run_Entry']
 
     }
 
