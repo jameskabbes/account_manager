@@ -7,9 +7,9 @@ import py_starter as ps
 class Entries( ParentPluralList, Base ):
 
     _OVERRIDE_OPTIONS = {
-    1: [ 'Open Entry', 'run_Child_user' ],
-    5: [ 'Open Account', 'run_Account'],
-    7: [ '', 'do_nothing' ]
+    "1": [ 'Open Entry', 'run_Child_user' ],
+    "5": [ 'Open Account', 'run_Account'],
+    "7": [ '', 'do_nothing' ]
     }
 
     def __init__( self, Account, dictionary = {}, **kwargs ):

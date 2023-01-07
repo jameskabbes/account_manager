@@ -5,10 +5,10 @@ class Entry( Base ):
     DEFAULT_ATT_VALUES = {'valid': True}
 
     _OVERRIDE_OPTIONS = {
-    1: [ 'Open Key', 'open_Key' ],
-    2: [ 'Open Value', 'open_Value'],
-    5: [ 'Open Entries', 'run_Entries'],
-    7: ['Delete','delete']
+    "1": [ 'Open Key', 'open_Key' ],
+    "2": [ 'Open Value', 'open_Value'],
+    "5": [ 'Open Entries', 'run_Entries'],
+    "7": ['Delete','delete']
     }
 
     _IMP_ATTS = [ 'Key','Value' ]

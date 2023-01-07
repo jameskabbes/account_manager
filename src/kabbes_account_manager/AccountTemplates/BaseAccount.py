@@ -25,10 +25,10 @@ class BaseAccount( Base ):
     OTHER_IMMUTABLE_ENTRY_VALUES = []
 
     _OVERRIDE_OPTIONS = {
-    1: [ 'Open Entries', 'open_Entries' ],
-    2: [ 'Add Entries', 'add_Entries_user'],
-    5: [ 'Open Accounts', 'run_Accounts' ],
-    7: ['Delete','delete']
+    "1": [ 'Open Entries', 'open_Entries' ],
+    "2": [ 'Add Entries', 'add_Entries_user'],
+    "5": [ 'Open Accounts', 'run_Accounts' ],
+    "7": ['Delete','delete']
     }
 
     BASE_IMP_ATTS = [ 'name','type' ]
