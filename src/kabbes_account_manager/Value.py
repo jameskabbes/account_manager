@@ -4,9 +4,7 @@ class Value( Key_Value_Base ):
 
     def __init__(self, *args, **kwargs ):
 
-        ###
         Key_Value_Base.__init__( self, *args, **kwargs )
-        ###
 
         if self.Entry.Key.val in self.Entry.Entries.Account.IMMUTABLE_ENTRY_VALUES:
             self.can_edit = False

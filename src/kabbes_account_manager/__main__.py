@@ -1,3 +1,3 @@
-from kabbes_account_manager import Client
-C = Client()
-C.run()
+from kabbes_account_manager import Manager
+M = Manager()
+M.Accounts.run()

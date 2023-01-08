@@ -1,15 +1,15 @@
 from parent_class import ParentPluralDict
 import kabbes_account_manager
-from kabbes_account_manager import Base, Key_Value_CRTI
+import kabbes_menu
 import py_starter as ps
 import pandas as pd
-import dir_ops as do
 import kabbes_cryptography as cryp
 
-class Accounts( ParentPluralDict, Base ):
+
+class Accounts( ParentPluralDict, kabbes_account_manager.Base, kabbes_menu.Menu ):
 
     _OVERRIDE_OPTIONS = {
-    "1": [ 'Open Account', 'open_Account_user' ],
+    "1": [ 'Open Account', 'run_Child_user' ],
     "2": [ 'Make Account', 'make_Account_user'],
     "5": [ 'Export non-encrypted', 'export_non_encrypted' ],
     "6": [ 'Backup Accounts', 'backup' ]
@@ -20,11 +20,12 @@ class Accounts( ParentPluralDict, Base ):
     def __init__(self, Manager, **kwargs ):
 
         ParentPluralDict.__init__( self, 'Accounts' )
-        Base.__init__( self, **kwargs )
+        kabbes_account_manager.Base.__init__( self, **kwargs )
+        kabbes_menu.Menu.__init__( self )
 
         #
         self.M = Manager
-        self.Key_Value_CRTI = Key_Value_CRTI( self )
+        self.Key_Value_CRTI = kabbes_account_manager.Key_Value_CRTI( self )
 
         #
         self.load_Account_templates()
@@ -84,12 +85,9 @@ class Accounts( ParentPluralDict, Base ):
         self._import_from_dict( dictionary )
 
     def _import_from_dict( self, dictionary ):
-
+        
         for Acc_id in dictionary:
             account_dictionary = dictionary[Acc_id]
-
-            print (account_dictionary)
-
             self.make_Account( account_dictionary['type'], dictionary = account_dictionary)
 
     def _import_from_Dir( self, is_empty ):

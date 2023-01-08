@@ -1,6 +1,8 @@
-from kabbes_account_manager import Base, Key, Value
+import kabbes_account_manager
+import kabbes_menu
+import kabbes_user_client
 
-class Entry( Base ):
+class Entry( kabbes_account_manager.Base, kabbes_menu.Menu ):
 
     DEFAULT_ATT_VALUES = {'valid': True}
 
@@ -11,12 +13,18 @@ class Entry( Base ):
     "7": ['Delete','delete']
     }
 
+    _CONFIG = {
+        "_Dir": kabbes_menu._Dir
+    }
+    cfg = kabbes_user_client.Client( dict=_CONFIG ).cfg
+
     _IMP_ATTS = [ 'Key','Value' ]
     _ONE_LINE_ATTS = [ 'Key','Value' ]
 
     def __init__( self, Entries, key = None, value = None, **kwargs ):
 
-        Base.__init__( self, **kwargs )
+        kabbes_account_manager.Base.__init__( self, **kwargs )
+        kabbes_menu.Menu.__init__( self )
         self.Entries = Entries
 
         #
@@ -44,11 +52,11 @@ class Entry( Base ):
 
     def make_Key( self, **kwargs ):
 
-        self.Key = Key( self, **kwargs )
+        self.Key = kabbes_account_manager.Key( self, **kwargs )
 
     def make_Value( self, **kwargs ):
 
-        self.Value = Value( self, **kwargs )
+        self.Value = kabbes_account_manager.Value( self, **kwargs )
 
     def delete_self( self ):
 

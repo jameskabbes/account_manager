@@ -6,9 +6,7 @@ class Key( Key_Value_Base ):
 
         self.prompt_string = 'Key: '
 
-        ###
         Key_Value_Base.__init__( self, *args, **kwargs )
-        ###
 
         if self.val in self.Entry.Entries.Account.IMMUTABLE_ENTRY_KEYS:
             self.can_edit = False

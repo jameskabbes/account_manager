@@ -1,10 +1,9 @@
-from kabbes_account_manager import Base, Entry
+import kabbes_account_manager 
+import kabbes_menu
+import kabbes_user_client
 from parent_class import ParentPluralList
-import py_starter as ps
 
-
-
-class Entries( ParentPluralList, Base ):
+class Entries( ParentPluralList, kabbes_account_manager.Base, kabbes_menu.Menu ):
 
     _OVERRIDE_OPTIONS = {
     "1": [ 'Open Entry', 'run_Child_user' ],
@@ -12,10 +11,16 @@ class Entries( ParentPluralList, Base ):
     "7": [ '', 'do_nothing' ]
     }
 
+    _CONFIG = {
+        "_Dir": kabbes_menu._Dir
+    }
+    cfg = kabbes_user_client.Client( dict=_CONFIG ).cfg
+
     def __init__( self, Account, dictionary = {}, **kwargs ):
 
-        Base.__init__( self, **kwargs )
+        kabbes_account_manager.Base.__init__( self, **kwargs )
         ParentPluralList.__init__( self, att='Entries')
+        kabbes_menu.Menu.__init__( self )
         self.Account = Account
 
         # Setup the dictionary
@@ -47,7 +52,7 @@ class Entries( ParentPluralList, Base ):
 
     def make_Entry( self, **kwargs ):
 
-        new_Entry = Entry( self, **kwargs )
+        new_Entry = kabbes_account_manager.Entry( self, **kwargs )
 
         if new_Entry.valid:
             self._add( new_Entry )

@@ -1,7 +1,6 @@
 import kabbes_account_manager
-from kabbes_account_manager import Base, Entries
-import py_starter as ps
-import pandas as pd
+import kabbes_user_client
+import kabbes_menu
 import datetime
 
 def make_Account( module, *args, **kwargs ):
@@ -9,11 +8,16 @@ def make_Account( module, *args, **kwargs ):
     return module.construct( *args, **kwargs )
 
 
-class BaseAccount( Base ):
+class BaseAccount( kabbes_account_manager.Base, kabbes_menu.Menu ):
 
     BASE_MAND_ENTRIES =           ['type','id','name','times_accessed','creation_date','access_date','entry_to_copy']
     BASE_IMMUTABLE_ENTRY_KEYS =   ['type','id','name','times_accessed','creation_date','access_date','entry_to_copy']
     BASE_IMMUTABLE_ENTRY_VALUES = ['type','id',       'times_accessed','creation_date','access_date'                ]
+
+    _CONFIG = {
+        "_Dir": kabbes_menu._Dir
+    }
+    cfg = kabbes_user_client.Client( dict=_CONFIG ).cfg
 
     BASE_DICTIONARY = {
         'times_accessed': 0,
@@ -39,7 +43,8 @@ class BaseAccount( Base ):
 
     def __init__(self, Accounts, dictionary = {}, **kwargs ):
 
-        Base.__init__( self, **kwargs )
+        kabbes_account_manager.Base.__init__( self, **kwargs )
+        kabbes_menu.Menu.__init__( self )
         self.Accounts = Accounts
 
         ### Get mandatory entries
@@ -65,6 +70,7 @@ class BaseAccount( Base ):
 
         # init always with the type autodetected
         self.load_Entries( dictionary = dictionary )
+
         self.name = self.Entries.get_Entry( 'name' ).Value.val
         self._Children = [ self.Entries ]
 
@@ -112,7 +118,7 @@ class BaseAccount( Base ):
 
     def load_Entries( self, **kwargs ):
 
-        self.Entries = Entries( self, **kwargs )
+        self.Entries = kabbes_account_manager.Entries( self, **kwargs )
 
     def export_to_dict( self ):
 

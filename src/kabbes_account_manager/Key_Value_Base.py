@@ -1,7 +1,9 @@
-from kabbes_account_manager import Base
+import kabbes_account_manager 
+import kabbes_menu
+import kabbes_user_client
 import py_starter as ps
 
-class Key_Value_Base( Base ):
+class Key_Value_Base( kabbes_account_manager.Base, kabbes_menu.Menu ):
 
     DEFAULT_ATT_VALUES = {
     'val': None,
@@ -14,16 +16,22 @@ class Key_Value_Base( Base ):
     "3": [ 'Raw Edit', 'raw_edit'],
     "4": [ 'Read from File', 'read_from_file'],
     "5": [ 'Open Entry', 'run_Entry']
-
     }
+
+    _CONFIG = {
+        "_Dir": kabbes_menu._Dir
+    }
+    cfg = kabbes_user_client.Client( dict=_CONFIG ).cfg
 
     MAND_ATTS = ['val']
     _IMP_ATTS = ['val']
     _ONE_LINE_ATTS = ['val']
 
     def __init__(self, Entry, **kwargs ):
+        
+        kabbes_account_manager.Base.__init__( self, **kwargs )
+        kabbes_menu.Menu.__init__( self )
 
-        Base.__init__( self, **kwargs )
         self.Entry = Entry
 
         # Have to
@@ -31,6 +39,7 @@ class Key_Value_Base( Base ):
             self.prompt_string = str(self.Entry.Key.val) + ': '
 
         self.get_mand_entries()
+
 
     def __len__( self ):
         return 1
@@ -58,7 +67,7 @@ class Key_Value_Base( Base ):
 
             prev_val = self.val
             if from_file:
-                self.val = self.Entry.Entries.Account.Accounts.M.cfg.file_input.Path.read()
+                self.val = self.Entry.Entries.Account.Accounts.M.cfg['file_input.Path'].read()
 
             else:
                 self.get_val( autocomplete = autocomplete, **kwargs )
