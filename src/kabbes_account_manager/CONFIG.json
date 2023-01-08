@@ -93,7 +93,7 @@
             "method": {
                 "name": "join_Path",
                 "kwargs":{
-                    "path": "decrypted_export.txt"
+                    "path": "decrypted_export.json"
                 }
             }
         }
