@@ -18,14 +18,11 @@ class Key_Value_Base( kabbes_account_manager.Base, kabbes_menu.Menu ):
     "5": [ 'Open Entry', 'run_Entry']
     }
 
-    _CONFIG = {
-        "_Dir": kabbes_menu._Dir
-    }
-    cfg = kabbes_user_client.Client( dict=_CONFIG ).cfg
-
     MAND_ATTS = ['val']
     _IMP_ATTS = ['val']
     _ONE_LINE_ATTS = ['val']
+
+    cfg_menu = kabbes_menu.Client( _OVERRIDE_OPTIONS=_OVERRIDE_OPTIONS ).cfg_menu
 
     def __init__(self, Entry, **kwargs ):
         

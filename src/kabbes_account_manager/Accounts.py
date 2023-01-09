@@ -17,6 +17,8 @@ class Accounts( ParentPluralDict, kabbes_account_manager.Base, kabbes_menu.Menu 
 
     MAX_PRINT_LENGTH = 10
 
+    cfg_menu = kabbes_menu.Client( _OVERRIDE_OPTIONS=_OVERRIDE_OPTIONS ).cfg_menu
+
     def __init__(self, Manager, **kwargs ):
 
         ParentPluralDict.__init__( self, 'Accounts' )

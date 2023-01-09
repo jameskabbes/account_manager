@@ -14,11 +14,6 @@ class BaseAccount( kabbes_account_manager.Base, kabbes_menu.Menu ):
     BASE_IMMUTABLE_ENTRY_KEYS =   ['type','id','name','times_accessed','creation_date','access_date','entry_to_copy']
     BASE_IMMUTABLE_ENTRY_VALUES = ['type','id',       'times_accessed','creation_date','access_date'                ]
 
-    _CONFIG = {
-        "_Dir": kabbes_menu._Dir
-    }
-    cfg = kabbes_user_client.Client( dict=_CONFIG ).cfg
-
     BASE_DICTIONARY = {
         'times_accessed': 0,
         'entry_to_copy': 'name'
@@ -40,6 +35,8 @@ class BaseAccount( kabbes_account_manager.Base, kabbes_menu.Menu ):
     OTHER_IMP_ATTS = []
 
     _SEARCHABLE_ATTS = ['name']
+
+    cfg_menu = kabbes_menu.Client( _OVERRIDE_OPTIONS=_OVERRIDE_OPTIONS ).cfg_menu
 
     def __init__(self, Accounts, dictionary = {}, **kwargs ):
 

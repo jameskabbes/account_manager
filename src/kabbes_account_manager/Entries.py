@@ -11,10 +11,7 @@ class Entries( ParentPluralList, kabbes_account_manager.Base, kabbes_menu.Menu )
     "7": [ '', 'do_nothing' ]
     }
 
-    _CONFIG = {
-        "_Dir": kabbes_menu._Dir
-    }
-    cfg = kabbes_user_client.Client( dict=_CONFIG ).cfg
+    cfg_menu = kabbes_menu.Client( _OVERRIDE_OPTIONS=_OVERRIDE_OPTIONS ).cfg_menu
 
     def __init__( self, Account, dictionary = {}, **kwargs ):
 

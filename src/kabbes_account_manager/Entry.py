@@ -13,13 +13,10 @@ class Entry( kabbes_account_manager.Base, kabbes_menu.Menu ):
     "7": ['Delete','delete']
     }
 
-    _CONFIG = {
-        "_Dir": kabbes_menu._Dir
-    }
-    cfg = kabbes_user_client.Client( dict=_CONFIG ).cfg
-
     _IMP_ATTS = [ 'Key','Value' ]
     _ONE_LINE_ATTS = [ 'Key','Value' ]
+
+    cfg_menu = kabbes_menu.Client( _OVERRIDE_OPTIONS=_OVERRIDE_OPTIONS ).cfg_menu
 
     def __init__( self, Entries, key = None, value = None, **kwargs ):
 
