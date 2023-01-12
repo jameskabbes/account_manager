@@ -17,7 +17,7 @@ class Value( Key_Value_Base ):
             password = input('Enter the value for password, type "' + random_key + '" for random password:  ')
 
             if password == random_key:
-                password = self.Entry.Entries.Account.Accounts.Manager.PasswordManager.gen_word_password()
+                password = self.Entry.Entries.Account.Accounts.M.PasswordManager.gen_word_password()
                 print (password)
 
             self.val = password
