@@ -5,7 +5,7 @@
     "remote":{
         "credentials":{
             "!Dir":{
-                "$ref": "{{working.Dir}}",
+                "$ref": "{R{working.Dir}R}",
                 "method": {
                     "name": "join_Dir",
                     "kwargs":{
@@ -16,7 +16,7 @@
         },
         "accounts":{
             "!Dir":{
-                "$ref": "{{remote.credentials.Dir}}",
+                "$ref": "{R{remote.credentials.Dir}R}",
                 "method": {
                     "name": "join_Dir",
                     "kwargs":{
@@ -29,7 +29,7 @@
     "local":{
         "credentials":{
             "!Dir":{
-                "$ref": "{{working.Dir}}",
+                "$ref": "{R{working.Dir}R}",
                 "method": {
                     "name": "join_Dir",
                     "kwargs":{
@@ -40,7 +40,7 @@
         },
         "accounts":{
             "!Dir":{
-                "$ref": "{{local.credentials.Dir}}",
+                "$ref": "{R{local.credentials.Dir}R}",
                 "method": {
                     "name": "join_Dir",
                     "kwargs":{
@@ -54,7 +54,7 @@
     "keys":{
         "private":{
             "!Path":{
-                "$ref": "{{local.credentials.Dir}}",
+                "$ref": "{R{local.credentials.Dir}R}",
                 "method": {
                     "name": "join_Path",
                     "kwargs":{
@@ -65,7 +65,7 @@
         },
         "public":{
             "!Path":{
-                "$ref": "{{remote.credentials.Dir}}",
+                "$ref": "{R{remote.credentials.Dir}R}",
                 "method": {
                     "name": "join_Path",
                     "kwargs":{
@@ -78,7 +78,7 @@
 
     "file_input":{
         "!Path":{
-            "$ref": "{{working.Dir}}",
+            "$ref": "{R{working.Dir}R}",
             "method": {
                 "name": "join_Path",
                 "kwargs":{
@@ -89,7 +89,7 @@
     },
     "decrypted_export":{
         "!Path":{
-            "$ref": "{{working.Dir}}",
+            "$ref": "{R{working.Dir}R}",
             "method": {
                 "name": "join_Path",
                 "kwargs":{
@@ -100,9 +100,9 @@
     },
     "backup":{
         "!Dir":{
-            "$ref": "{{Dir}}",
+            "$ref": "{R{Dir}R}",
             "!new_path":{
-                "$ref": "{{Dir}}",
+                "$ref": "{R{Dir}R}",
                 "method": {
                     "name": "lowest"
                 }
@@ -110,7 +110,7 @@
             "method": {
                 "name": "join_Dir",
                 "kwargs":{
-                    "path": "{{backup.!Dir.new_path}}"
+                    "path": "{R{backup.!Dir.new_path}R}"
                 }
             }
         }

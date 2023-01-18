@@ -1,6 +1,5 @@
 import kabbes_account_manager 
 import kabbes_menu
-import kabbes_user_client
 from parent_class import ParentPluralList
 
 class Entries( ParentPluralList, kabbes_account_manager.Base, kabbes_menu.Menu ):

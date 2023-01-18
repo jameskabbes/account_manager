@@ -1,6 +1,5 @@
 import kabbes_account_manager 
 import kabbes_menu
-import kabbes_user_client
 import py_starter as ps
 
 class Key_Value_Base( kabbes_account_manager.Base, kabbes_menu.Menu ):

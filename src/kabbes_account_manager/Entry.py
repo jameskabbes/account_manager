@@ -1,6 +1,5 @@
 import kabbes_account_manager
 import kabbes_menu
-import kabbes_user_client
 
 class Entry( kabbes_account_manager.Base, kabbes_menu.Menu ):
 
