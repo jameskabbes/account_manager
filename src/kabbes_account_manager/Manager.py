@@ -17,8 +17,6 @@ class Manager( kabbes_account_manager.Base ):
 
         kabbes_account_manager.Base.__init__( self, **kwargs )
 
-        self.cfg.parent.print_atts()
-
         self.Accounts = kabbes_account_manager.Accounts( self )
         self.PasswordManager = kabbes_password_creator.Client()
         self._Children = [ self.Accounts ]
