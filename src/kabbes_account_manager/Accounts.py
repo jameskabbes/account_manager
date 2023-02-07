@@ -130,7 +130,7 @@ class Accounts( ParentPluralDict, kabbes_account_manager.Base, kabbes_menu.Menu 
 
         # first, see if the user gave us something to use
         if self.M.cfg.get_node('Dir').get_value() == None:
-            if self.M.cfg['database_name'].get_value() != None:
+            if self.M.cfg.get_node('database_name').get_value() != None:
                 self.M.cfg.get_node('Dir').set_value( self.M.cfg['remote.accounts.Dir'].join_Dir( path = self.M.cfg['database_name'] ) )
 
         # now, check if Dir has been defined and is usable
