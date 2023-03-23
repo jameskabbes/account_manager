@@ -4,11 +4,7 @@ import kabbes_client
 
 class Manager( kabbes_account_manager.Base ):
 
-    _BASE_DICT = {
-        "_repo_Dir": kabbes_account_manager._repo_Dir,
-        "Dir": None
-    }
-
+    _BASE_DICT = {}
 
     client = kabbes_client.Package( kabbes_account_manager._Dir, dict = _BASE_DICT )
     cfg = client.cfg
@@ -17,7 +13,10 @@ class Manager( kabbes_account_manager.Base ):
 
         kabbes_account_manager.Base.__init__( self, **kwargs )
 
+        #self.cfg.print_atts()
+
         self.Accounts = kabbes_account_manager.Accounts( self )
         self.PasswordManager = kabbes_password_creator.Client()
         self._Children = [ self.Accounts ]
+
 

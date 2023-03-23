@@ -1,4 +1,5 @@
 {
+    "Dir": null,
     "working":{
         "!Dir": "{{cwd.Dir}}"
     },
