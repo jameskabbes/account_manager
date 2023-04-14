@@ -101,7 +101,7 @@
     },
     "backup":{
         "!Dir":{
-            "$ref": "{R{Dir}R}",
+            "$ref": "{R{local.accounts.Dir}R}",
             "!new_path":{
                 "$ref": "{R{Dir}R}",
                 "method": {
