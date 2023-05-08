@@ -24,3 +24,4 @@ from .Entry import Entry
 from .Entries import Entries
 from .Accounts import Accounts
 from .Manager import Manager
+from .Client import Client
