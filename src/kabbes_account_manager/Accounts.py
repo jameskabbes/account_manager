@@ -1,7 +1,7 @@
 from parent_class import ParentPluralDict
 import kabbes_account_manager
 import kabbes_menu
-import py_starter as ps
+import py_seedlings as ps
 import pandas as pd
 import kabbes_cryptography as cryp
 
